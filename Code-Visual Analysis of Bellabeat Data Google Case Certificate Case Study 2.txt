@@ -1,0 +1,312 @@
+﻿Process (in SQL):
+Dataset 1:
+#check to determine if multiple records of participant id's exist which might throw off results
+SELECT
+id,
+COUNT(*) AS num_records
+
+
+FROM temp-424017.Smart_Health_Device_Data.Daily_Activity_Table
+
+
+GROUP BY
+id
+HAVING num_records >1;
+
+
+SELECT DISTINCT(Id)
+FROM temp-424017.Smart_Health_Device_Data.Daily_Activity_Table;
+
+
+
+
+# check to see if any null values exist within the id column which may throw off the results of analysis
+SELECT *
+FROM temp-424017.Smart_Health_Device_Data.Daily_Activity_Table
+WHERE Id is NULL;
+
+
+# check to see if the activity date falls within the expected minimum and maximum values as depicted in the description of the dataset
+SELECT min(ActivityDate) as minimum_date, max(ActivityDate) as maximum_date
+FROM temp-424017.Smart_Health_Device_Data.Daily_Activity_Table;
+
+
+# check to see if any of the columns containing desired measurement parameters contain null values which might throw off the results of analysis
+SELECT *
+FROM temp-424017.Smart_Health_Device_Data.Daily_Activity_Table
+WHERE ActivityDate IS NULL OR VeryActiveDistance IS NULL OR ModeratelyActiveDistance IS NULL OR LightActiveDistance IS NULL OR VeryActiveMinutes IS NULL OR FairlyActiveMinutes IS NULL OR LightlyActiveMinutes IS NULL;
+
+
+DataSet 2:
+SELECT DISTINCT(ID) FROM `temp-424017.Smart_Health_Device_Data.Daily_Calorie_Per_Min_Table `;   #make sure all of the values are distinct from one another
+
+
+SELECT min(ActivityHour) AS Min_Hour,  max(ActivityHour) AS Max_Hour #make sure all of the values fall between the minimum and maximum time values as indicated in the description
+FROM `temp-424017.Smart_Health_Device_Data.Daily_Calorie_Per_Min_Table `;
+
+
+SELECT *
+FROM `temp-424017.Smart_Health_Device_Data.Daily_Calorie_Per_Min_Table `  #make sure none of the values in the calorie table are null values which could interfere with analysis
+WHERE ActivityHour IS NULL OR calories IS NULL;
+
+
+SELECT *
+FROM `temp-424017.Smart_Health_Device_Data.Daily_Step_Min` #make sure none of the values in the steptotal table are null values which could interfere with analysis
+WHERE StepTotal IS NULL;
+
+
+# Checking to see if there are any duplicate rows of ID and ActivityHour in the Daily calories per min table
+SELECT
+ID,
+ActivityHour,
+Count(*) AS num_records
+FROM `temp-424017.Smart_Health_Device_Data.Daily_Calorie_Per_Min_Table `
+GROUP BY ID,ActivityHour
+HAVING num_records>1;
+#Checking to see if there are any duplicate rows of ID and ActivityHour in the daily step per minute table
+
+
+SELECT
+ID,
+ActivityHour,
+Count(*) AS num_records
+FROM `temp-424017.Smart_Health_Device_Data.Daily_Step_Min`
+GROUP BY ID, ActivityHour
+HAVING num_records>1;
+
+
+# Create new table for daily calorie minutes to store the cleaned data
+
+
+CREATE TABLE `temp-424017.Smart_Health_Device_Data.Daily_Calorie_Per_Min_Table_Distinct` AS
+ SELECT DISTINCT
+ ID,
+ ActivityHour,
+ calories
+ FROM `temp-424017.Smart_Health_Device_Data.Daily_Calorie_Per_Min_Table ` ;
+
+
+# Create new table for daily step minutes to store the cleaned data
+CREATE TABLE `temp-424017.Smart_Health_Device_Data.Daily_Step_Min_Distinct`   AS
+SELECT DISTINCT
+ ID,
+ ActivityHour,
+ StepTotal
+ FROM `temp-424017.Smart_Health_Device_Data.Daily_Step_Min`;
+
+
+
+
+Analyze(In SQL):
+Dataset 1: 
+WITH id_averages AS (
+  SELECT id, EXTRACT(MONTH FROM ActivityDate) AS ActivityDate, AVG(VeryActiveDistance) AS Avg_VeryActiveDistance, AVG(ModeratelyActiveDistance) AS Avg_ModeratelyActiveDistance, AVG(LightActiveDistance) AS Avg_LightActiveDistance, AVG(VeryActiveMinutes) AS Avg_VeryActiveMinutes, AVG(FairlyActiveMinutes) AS Avg_FairlyActiveMinutes, AVG(LightlyActiveMinutes) AS Avg_LightlyActiveMinutes
+FROM temp-424017.Smart_Health_Device_Data.Daily_Activity_Table
+
+
+GROUP BY
+id, ActivityDate
+)
+
+
+SELECT ActivityDate, AVG(Avg_VeryActiveDistance) AS Avg_VeryActiveDistance, AVG(Avg_ModeratelyActiveDistance) AS Avg_ModeratelyActiveDistance, AVG(Avg_LightActiveDistance) AS Avg_LightActiveDistance, AVG(Avg_VeryActiveMinutes) AS Avg_VeryActiveMinutes, AVG(Avg_FairlyActiveMinutes) AS Avg_FairlyActiveMinutes, AVG(Avg_LightlyActiveMinutes) AS Avg_LightlyActiveMinutes
+FROM id_averages
+
+
+GROUP BY ActivityDate
+
+
+ORDER BY Avg_VeryActiveDistance DESC, Avg_ModeratelyActiveDistance DESC, Avg_LightActiveDistance DESC, Avg_VeryActiveMinutes DESC, Avg_FairlyActiveMinutes DESC, Avg_LightlyActiveMinutes DESC
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Dataset 2:
+SELECT DISTINCT(ID) FROM `temp-424017.Smart_Health_Device_Data.Daily_Calorie_Per_Min_Table `;   #make sure all of the values are distinct from one another
+
+
+SELECT min(ActivityHour) AS Min_Hour,  max(ActivityHour) AS Max_Hour #make sure all of the values fall between the minimum and maximum time values as indicated in the description
+FROM `temp-424017.Smart_Health_Device_Data.Daily_Calorie_Per_Min_Table `;
+
+
+SELECT *
+FROM `temp-424017.Smart_Health_Device_Data.Daily_Calorie_Per_Min_Table `  #make sure none of the values in the calorie table are null values which could interfere with analysis
+WHERE ActivityHour IS NULL OR calories IS NULL;
+
+
+SELECT *
+FROM `temp-424017.Smart_Health_Device_Data.Daily_Step_Min` #make sure none of the values in the steptotal table are null values which could interfere with analysis
+WHERE StepTotal IS NULL;
+
+
+# Checking to see if there are any duplicate rows of ID and ActivityHour in the Daily calories per min table
+SELECT
+ID,
+ActivityHour,
+Count(*) AS num_records
+FROM `temp-424017.Smart_Health_Device_Data.Daily_Calorie_Per_Min_Table `
+GROUP BY ID,ActivityHour
+HAVING num_records>1;
+#Checking to see if there are any duplicate rows of ID and ActivityHour in the daily step per minute table
+
+
+SELECT
+ID,
+ActivityHour,
+Count(*) AS num_records
+FROM `temp-424017.Smart_Health_Device_Data.Daily_Step_Min`
+GROUP BY ID, ActivityHour
+HAVING num_records>1;
+
+
+# Create new table for daily calorie minutes to store the cleaned data
+
+
+CREATE TABLE `temp-424017.Smart_Health_Device_Data.Daily_Calorie_Per_Min_Table_Distinct` AS
+ SELECT DISTINCT
+ ID,
+ ActivityHour,
+ calories
+ FROM `temp-424017.Smart_Health_Device_Data.Daily_Calorie_Per_Min_Table ` ;
+
+
+# Create new table for daily step minutes to store the cleaned data
+CREATE TABLE `temp-424017.Smart_Health_Device_Data.Daily_Step_Min_Distinct`   AS
+SELECT DISTINCT
+ ID,
+ ActivityHour,
+ StepTotal
+ FROM `temp-424017.Smart_Health_Device_Data.Daily_Step_Min`;
+
+
+
+
+SELECT
+cpm.calories,
+dsm.steptotal,
+cpm.ActivityHour,
+cpm.id
+FROM `temp-424017.Smart_Health_Device_Data.Daily_Calorie_Per_Min_Table_Distinct`  AS cpm
+JOIN `temp-424017.Smart_Health_Device_Data.Daily_Step_Min_Distinct` AS dsm
+ON cpm.ID=dsm.ID AND cpm.ActivityHour=dsm.ActivityHour;
+
+
+
+
+PROCESS( In R):
+1. Cleaning and Making sure the Data is intact so it can be analyzed
+install.packages('tidyverse')
+library(tidyverse)
+daily_activity<-read.csv("dailyActivity_merged.csv")
+head(daily_activity)
+# checking to make sure that all of the names of the columns included in the data set are in the data table that was uploaded onto the database
+colonames(daily_activity) 
+# importing the hourlyCalories and hourlySteps data onto the database
+hourlyCalories<-read.csv("hourlycalories_merged.csv")
+hourlySteps<-read.csv("hourlySteps_merged.csv")
+
+
+#Viewing the first several rows of the data table to get a good understanding of what the data is like
+head(daily_activity)
+head(hourlyCalories) 
+# making sure that the number of distinct rows match up with the number of expected data points to ensure no duplicates exist   
+n_distinct(daily_activity)
+hourlySteps<-read.csv(hourlySteps_merged.csv)
+
+
+head(hourlySteps)  
+
+
+n_distinct(daily_activity$ID)
+n_distinct(hourlyCalories$ID)
+
+
+n_distinct(hourlySteps$ID)
+
+
+nrow(daily_activity)
+
+
+nrow(hourlyCalories)
+
+
+nrow(hourlySteps)
+
+
+
+
+#summarize the data to get a pretty good idea of what magnitude of the parameters you will be extracting from it
+ daily_activity %>% select(ActivityDate, VeryActiveMinutes, FairlyActiveMinutes, LightlyActiveMinutes) %>%
+    
+           
+  
+ daily_activity %>% select(ActivityDate, VeryActiveMinutes, FairlyActiveMinutes, LightlyActiveMinutes) %>% 
+ summary()
+
+
+
+
+ daily_activity %>%
++ select(VeryActiveDistance, ModeratelyActiveDistance, LightActiveDistance, SedentaryActiveDistance) %>%
+summary()
+    
+   
+ daily_activity%>%
++ select(VeryActiveMinutes, FairlyActiveMinutes, LightActiveMinutes, SedentaryActiveMinutes) %>%
+ summary()
+
+
+ daily_activity%>%
++ select(VeryActiveMinutes, FairlyActiveMinutes, LightlyActiveMinutes, SedentaryActiveMinutes) %>%
+ summary()
+
+
+ daily_activity%>%
++ select(VeryActiveMinutes, FairlyActiveMinutes, LightlyActiveMinutes, SedentaryMinutes)%>%
+ summary()
+
+
+ hourlyCalories %>%
++ select(ActivityHour, Calories)%>%
+summary()
+
+
+
+
+Analyze (In R):
+
+
+# Create graph of calories vs. total steps
+ggplot(data=daily_activity,aes(x=TotalSteps, y=Calories)) +geom_point()
+
+
+
+
+
+
+#create graph of fairly active minutes vs. moderately active distance in the form of a scatter plot
+
+
+ggplot(data=daily_activity, aes(x=FairlyActiveMinutes, y=ModeratelyActiveDistance)) +geom_point
+
+
+
+
+
+
+#create graph of light active minutes vs. light  active distance in the form of a scatter plot
+
+
+ggplot(data=daily_activity, aes(x=LightlyActiveMinutes, y=LightActiveDistance)) +geom_point()
