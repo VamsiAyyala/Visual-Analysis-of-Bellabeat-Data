@@ -1,12 +1,10 @@
 Business Objective:
 Bella beat is a high tech manufacturer of health focused products for women. They have the potential to become a larger player in the global smart device market. The company co-founder and chief creative officer Urska Srsen believes that by analyzing smart device data insights information can be derived from consumers which can lead to marketing strategies that can open the door to new growth opportunities for the company.
 
-Primary stakeholders:
-1.Urska Srsen
-
-2.Sando Mur
-
-3.Bellabeat Marketing Analytics Team
+Primary stakeholders: 
+1.Urska Srsen Bellabeat co-founder and Chief Creative Officer
+2.Sando Mur co-founder, mathematician and executive of the Bellabeat Executive team
+3.Bellabeat Marketing Analytics Team 
 
 Conclusion/Recommendations:
 
