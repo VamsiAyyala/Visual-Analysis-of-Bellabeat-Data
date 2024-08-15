@@ -3,7 +3,9 @@ Bella beat is a high tech manufacturer of health focused products for women. The
 
 Primary stakeholders:
 1.Urska Srsen
+
 2.Sando Mur
+
 3.Bellabeat Marketing Analytics Team
 
 Conclusion/Recommendations:
