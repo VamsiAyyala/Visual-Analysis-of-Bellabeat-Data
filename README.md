@@ -4,9 +4,9 @@ Bella beat is a high tech manufacturer of health focused products for women. The
 
 Primary stakeholders: 
 
-1.Urska Srsen Bellabeat co-founder and Chief Creative Officer
+1.Urska Srsen-Bellabeat co-founder and Chief Creative Officer
 
-2.Sando Mur co-founder, mathematician and executive of the Bellabeat Executive team
+2.Sando Mur-co-founder, mathematician and executive of the Bellabeat Executive team
 
 3.Bellabeat Marketing Analytics Team 
 
