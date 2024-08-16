@@ -1,5 +1,5 @@
 Business Objective:
-Bellabeat is a high-tech manufacturer of health-focused products for women. They have the potential to become a larger player in the global smart device market. The company co-founder and chief creative officer Urska Srsen believes that by analyzing smart device data insights information can be derived from consumers which can lead to marketing strategies that can open the door to new growth opportunities for the company.
+Bellabeat is a high-tech manufacturer of health-focused products for women. They have the potential to become a larger player in the global smart device market. The company co-founder and chief creative officer Urska Srsen believes that by analyzing smart device data, information can be derived from consumers which can lead to marketing strategies that can open the door to new growth opportunities for the company.
 
 Primary stakeholders:
 1. Urska Srsen-Bellabeat co-founder and chief creative officer
